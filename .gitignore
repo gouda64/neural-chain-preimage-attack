@@ -4,7 +4,8 @@ out/
 !**/src/test/**/out/
 .idea/*
 *.iml
-data.csv
+*.csv
+*.out
 
 ### Eclipse ###
 .apt_generated

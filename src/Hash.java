@@ -19,6 +19,7 @@ public class Hash
                             randBits(448-8-8);
             // randbits must be factor of 8
             String sha1 = sha1(bits, 1)[80];
+            // bc biginteger always adds an extra byte in front to indicate sign?
             if (!sha1.equals(bytesToHex(md.digest(new BigInteger(bits, 2).toByteArray())))) {
                 System.out.println(i);
                 System.out.println(bits);
@@ -195,7 +196,7 @@ public class Hash
     }
 
 
-    private static String attach(int[] parts) {
+    public static String attach(int[] parts) {
         String[] partStr = new String[parts.length];
         for (int i = 0; i < parts.length; i++) {
             partStr[i] = Integer.toBinaryString(parts[i]);

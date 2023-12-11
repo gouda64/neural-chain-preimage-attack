@@ -7,7 +7,8 @@ import java.util.stream.Stream;
 
 public class DataHandler {
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-        encodeData(100000, "./src/data.csv");
+//        encodeData(100000, "./src/data.csv");
+        encodeData(100, "./src/test.csv");
     }
 
     public static void encodeData(int size, String outFile) throws IOException, NoSuchAlgorithmException {
