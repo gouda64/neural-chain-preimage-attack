@@ -1,3 +1,5 @@
+package prelim;
+
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -6,10 +8,17 @@ import java.util.Random;
 
 public class Hash
 {
-    static final int BIT_LENGTH = 448 - 8 - 8; // 2 8s to allow for padding, guaranteed only 1 block
+    public static final int BIT_LENGTH = 432;//448 - 8 - 8; // 2 8s to allow for padding, guaranteed only 1 block
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         System.out.println(checkSha1Impl());
+
+//        int h0 = 0x67452301;
+//        int h1 = 0xEFCDAB89;
+//        int h2 = 0x98BADCFE;
+//        int h3 = 0x10325476;
+//        int h4 = 0xC3D2E1F0;
+//        System.out.println(attach(new int[]{h0, h1, h2, h3, h4}));
     }
 
     public static boolean checkSha1Impl() throws NoSuchAlgorithmException {

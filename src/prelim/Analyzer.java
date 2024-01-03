@@ -1,7 +1,8 @@
+package prelim;
+
 import java.io.*;
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.StringTokenizer;
 
 public class Analyzer {

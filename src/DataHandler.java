@@ -1,3 +1,5 @@
+import prelim.Hash;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +19,7 @@ public class DataHandler {
 
         PrintWriter pw = new PrintWriter(new FileWriter(outFile));
         String[][] data = new String[size][81];
-        //input, output, 79 other internal states from end-start
+        //input, 80 internal states from start-end
         for (int i = 0; i < size; i++) {
             String bits = Hash.randBits(Hash.BIT_LENGTH);
             data[i] = Hash.sha1(bits, 1);
