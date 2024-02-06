@@ -9,14 +9,15 @@ from torch.utils.data import Dataset, DataLoader
 
 import data
 import feedforward
+import recurrent
 
 size = 160
 
-learning_rate = 0.001
+learning_rate = 0.01
 num_epochs = 11
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-model = feedforward.FeedForward(size)
+model = recurrent(size)
 model = model.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -24,16 +25,23 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 ## compute accuracy
 def get_accuracy(logit, target, batch_size):
     ''' Obtain accuracy for training round '''
-    corrects = (logit == target).float().sum() # (torch.max(logit, 1)[1].view(target.size()).data == target.data).sum()
-    accuracy = 100.0 * corrects/batch_size
-    return accuracy.item()
+    corrects = (logit == target).all(axis=1).sum().item()
+    return corrects/batch_size
+
+def get_bit_accuracy(logit, target, batch_size):
+    corrects = (logit == target).sum().item()
+    return corrects/(batch_size*size)
 
 def train(train_loader, test_loader, model):
+    train_len = len(train_loader.dataset);
+    test_len = len(test_loader.dataset)
+
     for epoch in range(num_epochs):
         train_running_loss = 0.0
         train_acc = 0.0
 
         model = model.train()
+        correct = 0
 
         ## training step
         for i, (layers, prevLayers) in enumerate(train_loader):
@@ -50,10 +58,10 @@ def train(train_loader, test_loader, model):
             optimizer.step()
 
             train_running_loss += loss.detach().item()
-            train_acc += get_accuracy(logits, prevLayers, len(layers))
+            train_acc += get_accuracy(logits, prevLayers, data.BATCH_SIZE)
 
-        train_running_loss /= (i+1)
-        train_acc /= (i+1)
+        train_running_loss /= i
+        train_acc /= i
 
         model.eval()
         test_acc = 0.0
@@ -61,9 +69,9 @@ def train(train_loader, test_loader, model):
             layers = layers.to(device)
             prevLayers = prevLayers.to(device)
             outputs = model(layers)
-            test_acc += get_accuracy(outputs, prevLayers, data.BATCH_SIZE)
+            test_acc += get_bit_accuracy(outputs, prevLayers, data.BATCH_SIZE)
 
-        test_acc /= (i+1)
+        test_acc /= i
 
         print('Epoch: %d | Loss: %.4f | Train Accuracy: %.2f' \
               %(epoch, train_running_loss, train_acc))
