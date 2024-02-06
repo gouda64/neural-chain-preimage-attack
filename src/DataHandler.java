@@ -9,8 +9,11 @@ import java.util.stream.Stream;
 
 public class DataHandler {
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-//        encodeData(100000, "./src/data.csv");
-        encodeData(100, "./src/test.csv");
+        long start = System.nanoTime();
+        encodeDataRestricted((int)Math.pow(10, 5), "./src/data-restricted-small.csv");
+        long end = System.nanoTime();
+        System.out.println((end-start)/Math.pow(10, 9) + " seconds to execute");
+//        encodeData(100, "./src/test.csv");
     }
 
     public static void encodeData(int size, String outFile) throws IOException, NoSuchAlgorithmException {
@@ -18,12 +21,27 @@ public class DataHandler {
         //encoded in hex
 
         PrintWriter pw = new PrintWriter(new FileWriter(outFile));
-        String[][] data = new String[size][81];
         //input, 80 internal states from start-end
         for (int i = 0; i < size; i++) {
             String bits = Hash.randBits(Hash.BIT_LENGTH);
-            data[i] = Hash.sha1(bits, 1);
-            pw.println(convertToCSV(data[i]));
+
+            pw.println(convertToCSV(Hash.sha1(bits, 1)));
+            //https://www.baeldung.com/java-csv
+        }
+
+        pw.close();
+    }
+
+    public static void encodeDataRestricted(int size, String outFile) throws IOException, NoSuchAlgorithmException {
+        //chance of overlap is so small that it doesn't matter
+        //encoded in hex
+
+        PrintWriter pw = new PrintWriter(new FileWriter(outFile));
+        //input, 80 internal states from start-end
+        for (int i = 0; i < size; i++) {
+            String bits = Hash.randTextBits(Hash.BIT_LENGTH);
+
+            pw.println(convertToCSV(Hash.sha1(bits, 1)));
             //https://www.baeldung.com/java-csv
         }
 

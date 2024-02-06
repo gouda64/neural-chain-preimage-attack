@@ -1,6 +1,7 @@
 package prelim;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +12,16 @@ public class Hash
     public static final int BIT_LENGTH = 432;//448 - 8 - 8; // 2 8s to allow for padding, guaranteed only 1 block
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-        System.out.println(checkSha1Impl());
+//        System.out.println(checkSha1Impl());
+
+        String bits = randTextBits(BIT_LENGTH);
+        System.out.println(bits.length());
+        int ones = 0;
+        for (int i = 0; i < bits.length(); i++) {
+            if (bits.charAt(i) == '1') ones++;
+        }
+        System.out.println(ones);
+        System.out.println(bits);
 
 //        int h0 = 0x67452301;
 //        int h1 = 0xEFCDAB89;
@@ -227,6 +237,31 @@ public class Hash
         return hex.toString();
     }
 
+    public static String randTextBits(int bitLength) {
+        String text = randText(bitLength/8);
+        byte[] bytes = text.getBytes();
+
+        StringBuilder binary = new StringBuilder();
+        for (byte b : bytes)
+        {
+            int val = b;
+            for (int i = 0; i < 8; i++)
+            {
+                binary.append((val & 128) == 0 ? 0 : 1);
+                val <<= 1;
+            }
+//            binary.append(' ');
+        }
+        return binary.toString();
+    }
+    private static String randText(int length) {
+        final String source = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(source.charAt((int)(Math.random() * source.length())));
+        }
+        return sb.toString();
+    }
 
     public static String randBits(int length) {
         Random rand = new Random();
