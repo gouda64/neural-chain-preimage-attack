@@ -28,9 +28,10 @@ class HashDataset(Dataset):
         if torch.is_tensor(idx):
             idx = idx.tolist()
 
-        input = self.hash_frame.iloc[idx, self.layer_num]
-        output = INITIAL_STATE if (self.layer_num == 1) else self.hash_frame.iloc[idx, self.layer_num - 1]
-
+        input = self.hash_frame.iloc[idx, 1 if (self.layer_num == 0) else self.layer_num]
+        output = INITIAL_STATE if (self.layer_num == 1) else self.hash_frame.iloc[idx, 0 if (self.layer_num == 0) else self.layer_num - 1]
+        # print(input)
+        # print(output)
         sample = {'layer': torch.tensor([float(char) for char in format(int(input, 16), '0>160b')]),
                   'prevLayer': torch.tensor([float(char) for char in format(int(output, 16), '0>160b')])}
 
