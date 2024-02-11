@@ -52,6 +52,7 @@ public class Hash
     }
 
     public static String[] sha1(String bits, int blocks) {
+        // returns og message + internal states 1 to 80
         int h0 = 0x67452301;
         int h1 = 0xEFCDAB89;
         int h2 = 0x98BADCFE;

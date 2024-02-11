@@ -6,6 +6,7 @@ out/
 *.iml
 *.csv
 *.out
+data/
 
 ### Eclipse ###
 .apt_generated
