@@ -98,11 +98,12 @@ def msg_to_hash(msgbits, rounds):
     return fzb2hex(fuzzhash1)
 
 def gen_data(input_length, size, file):
+    print("updated")
     with open(file, 'w') as pw:
-        for i in range(size):
+        for i in range(input_length):
             bits = np.random.uniform(size=size)
             pw.write(msg_to_hash(bits, 2) + "," + msg_to_hash(bits, 3) + "\n")
     return
 
 if __name__ == '__main__':
-    gen_data(pow(10, 2), 432, "../fuzzy-3.csv")
+    gen_data(pow(10, 3), 432, "./fuzzy-3.csv")
