@@ -89,8 +89,6 @@ def test():
     print("FuzzHashSHA1-160-Hex:", fzb2hex(fuzzhash1))
     print("ByteHashSHA1-160-Hex:", bytehash.bytes2hex(bytehash.sha1bytes(bytes(msgstr, encoding='ASCII'), rounds=2)))
 
-# test()
-
 def msg_to_hash(msgbits, rounds):
     msg = np.array(msgbits).astype('float64')
 

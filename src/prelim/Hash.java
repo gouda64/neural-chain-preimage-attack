@@ -34,11 +34,9 @@ public class Hash
     public static boolean checkSha1Impl() throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         for (int i = 0; i < 1000; i++) {
-            String bits = //stringToBits(UUID.randomUUID().toString() + UUID.randomUUID().toString() + UUID.randomUUID().toString());
-                            randBits(448-8-8);
+            String bits = randBits(448-8-8);
             // randbits must be factor of 8
             String sha1 = sha1(bits, 1)[80];
-            // bc biginteger always adds an extra byte in front to indicate sign?
             if (!sha1.equals(bytesToHex(md.digest(new BigInteger(bits, 2).toByteArray())))) {
                 System.out.println(i);
                 System.out.println(bits);
@@ -52,7 +50,7 @@ public class Hash
     }
 
     public static String[] sha1(String bits, int blocks) {
-        // returns og message + internal states 1 to 80
+        // returns original message + internal states 1 to 80
         int h0 = 0x67452301;
         int h1 = 0xEFCDAB89;
         int h2 = 0x98BADCFE;
@@ -113,12 +111,11 @@ public class Hash
                     f = (b & c) | (b & d) | (c & d);
                     k = 0x8F1BBCDC;
                 }
-                else if (j >= 60 && j <= 79) { //or just plain else
+                else if (j >= 60 && j <= 79) {
                     f = b ^ c ^ d;
                     k = 0xCA62C1D6;
                 }
 
-                //two's complement, signed/unsigned shouldn't matter for addition
                 int temp = Integer.rotateLeft(a, 5) + f + e + k + w[j];
                 e = d;
                 d = c;
@@ -139,6 +136,7 @@ public class Hash
         return states;
     }
 
+    // for testing
     public static String sha1Singular(String bits) {
         int h0 = 0x67452301;
         int h1 = 0xEFCDAB89;
@@ -152,7 +150,6 @@ public class Hash
 
         BigInteger message = new BigInteger(bits, 2);
         message = message.or(BigInteger.ONE.shiftLeft(bits.length()));
-        //1 in front to keep 0s
 
         message = message.shiftLeft(1).or(BigInteger.ONE);
         message = message.shiftLeft((512 + (449 - message.bitLength()) % 512) % 512);
@@ -191,12 +188,11 @@ public class Hash
                     f = (b & c) | (b & d) | (c & d);
                     k = 0x8F1BBCDC;
                 }
-                else if (j >= 60 && j <= 79) { //or just plain else
+                else if (j >= 60 && j <= 79) {
                     f = b ^ c ^ d;
                     k = 0xCA62C1D6;
                 }
 
-                //two's complement, signed/unsigned shouldn't matter for addition
                 int temp = Integer.rotateLeft(a, 5) + f + e + k + w[j];
                 e = d;
                 d = c;
@@ -251,7 +247,6 @@ public class Hash
                 binary.append((val & 128) == 0 ? 0 : 1);
                 val <<= 1;
             }
-//            binary.append(' ');
         }
         return binary.toString();
     }
@@ -274,7 +269,7 @@ public class Hash
         while (sb.substring(traverse, traverse + 8).equals("00000000")) {
             sb = new StringBuilder(sb.substring(traverse + 8));
             traverse += 8;
-        } //trimming
+        }
         return sb.toString();
     }
 

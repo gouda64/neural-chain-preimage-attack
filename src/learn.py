@@ -22,9 +22,7 @@ model = model.to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-## compute accuracy
 def get_accuracy(logit, target, batch_size):
-    ''' Obtain accuracy for training round '''
     corrects = (logit == target).all(axis=1).sum().item()
     return corrects/batch_size
 
@@ -43,18 +41,15 @@ def train(train_loader, test_loader, model):
         model = model.train()
         correct = 0
 
-        ## training step
         for i, (layers, prevLayers) in enumerate(train_loader):
             layers = layers.to(device)
             prevLayers = prevLayers.to(device)
 
-            ## forward + backprop + loss
             logits = model(layers)
             loss = criterion(logits, prevLayers)
             optimizer.zero_grad()
             loss.backward()
 
-            ## update model params
             optimizer.step()
 
             train_running_loss += loss.detach().item()

@@ -10,7 +10,6 @@ from torch.utils.data import Dataset, DataLoader
 BATCH_SIZE = 64
 INITIAL_STATE = "67452301efcdab8998badcfe10325476c3d2e1f0"
 
-## transformations
 transform = transforms.Compose(
     [ transforms.ToTensor()])
 
@@ -59,6 +58,5 @@ if __name__ == '__main__':
     train_loader, test_loader = load_data("prelim/test.csv", 2)
     print(list(train_loader)[0])
     print(list(test_loader)[0])
-    #
     # input = "07893e555712ce8a14ae47e0a8ed3174d4053666"
     # print(torch.tensor([int(char) for char in format(int(input, 16), '0>432b')]))

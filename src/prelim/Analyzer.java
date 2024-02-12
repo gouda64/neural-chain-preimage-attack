@@ -22,7 +22,6 @@ public class Analyzer {
 
         // expected: 80
         double chiSquare = 0;
-        // 199 999 df
         while ((line = br.readLine()) != null) {
             StringTokenizer st = new StringTokenizer(line, ",");
             BigInteger input = new BigInteger(st.nextToken(), 16);
