@@ -65,17 +65,20 @@ def train(train_loader, test_loader, model):
 
         model.eval()
         test_acc = 0.0
+        test_bit_acc = 0.0
         for i, (layers, prevLayers) in enumerate(test_loader, 0):
             layers = layers.to(device)
             prevLayers = prevLayers.to(device)
             outputs = model(layers)
-            test_acc += get_bit_accuracy(outputs, prevLayers, data.BATCH_SIZE)
+            test_acc += get_accuracy(outputs, prevLayers, data.BATCH_SIZE)
+            test_bit_acc += get_bit_accuracy(outputs, prevLayers, data.BATCH_SIZE)
 
         test_acc /= i
+        test_bit_acc /= i
 
         print('Epoch: %d | Loss: %.4f | Train Accuracy: %.2f' \
               %(epoch, train_running_loss, train_acc))
-        print('Test Accuracy: %.2f'%( test_acc))
+        print('Test Accuracy: %.2f | Test Bit Accuracy: %.2f'%( test_acc, test_bit_acc))
     torch.save(model, "/model.pt")
 
 if __name__ == '__main__':
